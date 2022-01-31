@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <!-- Se aplica la plantilla de estilos -->
+        <ui:composition template="./WEB-INF/plantilla/plantilla.xhtml">
+            <!-- Se cambia la sección content de la plantilla -->
+            <ui:define name="content">
+
+                <h:form id="personasListForm" style="text-align: start">
+                    <p:growl id="messages" showDetail="true"/>
+                    <p:messages/>
+
+                    <!--Tabla principal-->
+                    <p:dataTable id="personasDataTable" value="#{personaBean.personas}" var="persona" editable="true"
+                                 rowKey="#{persona.idPersona}" selection="#{personaBean.personaSeleccionada}" selectionMode="single">
+
+                        <f:facet name="header">
+                            Listado de personas
+                        </f:facet>
+
+                        <p:column headerText="ID">
+                            <h:outputText value="#{persona.idPersona}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <p:cellEditor> <!--Para poder editar el contenido de esta celda-->
+                                <f:facet name="output">
+                                    <h:outputText value="#{persona.nombre}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{persona.nombre}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Apellido">
+                            <p:cellEditor> 
+                                <f:facet name="output">
+                                    <h:outputText value="#{persona.apellido}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{persona.apellido}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Email">
+                            <p:cellEditor> 
+                                <f:facet name="output">
+                                    <h:outputText value="#{persona.email}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{persona.email}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Telefono">
+                            <p:cellEditor> 
+                                <f:facet name="output">
+                                    <h:outputText value="#{persona.telefono}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{persona.telefono}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <!--Columna para editar todas las personas de la tabla-->
+                        <p:column>
+                            <p:rowEditor/>
+                        </p:column>
+                        <!--Evento llamado rowEdit para que cuando se modifique una celda se mande a llamar
+                        el método eventListener del PersonaBean-->
+                        <p:ajax event="rowEdit" listener="#{personaBean.editListener}"/>
+
+                        <!--Footer de la tabla con botones de regresar y agregar-->
+                        <f:facet name="footer">
+                            <p:commandButton value="Regresar" action="index"/>
+                            <p:spacer height="5px"/>
+                            <p:commandButton value="Agregar" actionListener="#{personaBean.reiniciarPersonaSeleccionada}"
+                                             update=":dialogForm" oncomplete="PF('personaDialog').show()"/>
+                        </f:facet>
+
+                    </p:dataTable>
+
+                    <!--Botón de eliminar al dar click derecho sobre una fila de la tabla-->
+                    <p:contextMenu for="personasDataTable">
+                        <p:menuitem value="Eliminar" update="personasListForm:personasDataTable" icon="pi pi-trash"
+                                    actionListener="#{personaBean.eliminarPersona}"/>
+                    </p:contextMenu>
+                </h:form>
+
+                <!--Widget de agregar persona-->
+                <p:dialog id="personaDlg" widgetVar="personaDialog" header="Agregar persona" modal="true" showEffect="fade"
+                          hideEffect="fade" resizable="false">
+                    <h:form id="dialogForm">
+                        <p:outputPanel id="personaDetail" style="text-align: center">
+                            <p:panelGrid id="display" columns="4" columnClasses="label, value">
+                                <h:outputText value="Nombre"/>
+                                <h:inputText value="#{personaBean.personaSeleccionada.nombre}"/>
+
+                                <h:outputText value="Apellido"/>
+                                <h:inputText value="#{personaBean.personaSeleccionada.apellido}"/>
+
+                                <h:outputText value="Email"/>
+                                <h:inputText value="#{personaBean.personaSeleccionada.email}"/>
+
+                                <h:outputText value="Telefono"/>
+                                <h:inputText value="#{personaBean.personaSeleccionada.telefono}"/>
+
+                                <f:facet name="footer">
+                                    <!--Con update se actualiza el formulario con id="personasListForm" pero solo el componente
+                                    personasDataTable. Se actualiza con AJAX.-->
+                                    <p:commandButton value="Agregar" actionListener="#{personaBean.agregarPersona}"
+                                                     update="display,:personasListForm:personasDataTable" oncomplete="PF('personaDialog').hide();"/>
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+
+                <!--Estado de la petición AJAX-->
+                <p:ajaxStatus styleClass="p-d-block p-mb-4">
+                    <f:facet name="default">
+                        <h:outputText value="Estado de la petición AJAX: Esperando petición" />
+                    </f:facet>
+
+                    <f:facet name="start">
+                        <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true" style="font-size: 2rem"></i>
+                    </f:facet>
+
+                    <f:facet name="complete">
+                        <h:outputText value="Estado de la petición AJAX: Petición completada" />
+                    </f:facet>
+                </p:ajaxStatus>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

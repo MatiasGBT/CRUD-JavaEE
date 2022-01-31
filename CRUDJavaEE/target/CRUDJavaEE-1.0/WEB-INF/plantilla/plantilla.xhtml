@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>CRUD JavaEE</title>
+        <h:outputStylesheet library="css" name="estilos.css"/>
+    </h:head>
+    <h:body>
+        <!-- Header -->
+        <div id="header">
+            <ui:insert name="top">
+                <h1>CRUD JavaEE + PrimeFaces</h1>
+            </ui:insert>
+        </div>
+
+        <!-- Contenido -->
+        <div id="page">
+            <ui:insert name="content">
+                Contenido
+            </ui:insert>
+        </div>
+
+        <!-- Footer -->
+        <div id="footer">
+            <ui:insert name="bottom">
+                <a href="https://github.com/MatiasGBT?tab=repositories" target="_blank">
+                    Matías Gabriel Blanco Toledo <i class="pi pi-github"></i></a>
+            </ui:insert>
+        </div>
+    </h:body>
+</html>

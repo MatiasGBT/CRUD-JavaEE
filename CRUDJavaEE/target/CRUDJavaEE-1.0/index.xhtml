@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <!-- Se aplica la plantilla de estilos -->
+        <ui:composition template="./WEB-INF/plantilla/plantilla.xhtml">
+            <!-- Se cambia la sección content de la plantilla -->
+            <ui:define name="content">
+
+                <div id="titulo">
+                    <h2>Sistema SGA</h2>
+                    <h:form>
+                        <h:commandButton value="Listar personas" action="listadoPersonas"/>
+                    </h:form> 
+                </div>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

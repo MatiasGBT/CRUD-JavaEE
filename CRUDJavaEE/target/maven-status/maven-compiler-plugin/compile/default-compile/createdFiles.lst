@@ -1,0 +1,7 @@
+sga\datos\PersonaDao.class
+sga\datos\PersonaDaoImpl.class
+sga\domain\Persona.class
+sga\servicio\PersonaService.class
+sga\web\ConfiguracionBean.class
+sga\servicio\PersonaServiceImpl.class
+sga\web\PersonaBean.class
